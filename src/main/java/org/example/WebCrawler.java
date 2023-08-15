@@ -10,7 +10,7 @@ import org.jsoup.nodes.Element;
 
 public class WebCrawler implements Runnable {
 
-    private static final int MAX_DEPTH = 3;
+    private static final int MAX_DEPTH = 5;
     public Thread thread;
     private ArrayList<String> visitedLikns;
     private String first_link;
@@ -34,6 +34,7 @@ public class WebCrawler implements Runnable {
         String title;
         String next_link;
         try {
+            System.out.println("Welecom to web crawler");
             if (level <= MAX_DEPTH) {
                 Connection con = Jsoup.connect(url);
                 doc = con.get();
@@ -43,7 +44,9 @@ public class WebCrawler implements Runnable {
                 if (con.response().statusCode() == 200) {
                     title = doc.title();
                     visitedLikns.add(url);
-                    System.out.println("\n" + title);
+                    System.out.println("\nTitle: " + title);
+                    System.out.println("URL: " + url);
+                    System.out.println("Depth: " + level);
                 }
 
                 for (Element element : doc.select("a[href]")) {
@@ -58,6 +61,8 @@ public class WebCrawler implements Runnable {
             Thread.currentThread().interrupt();
         } catch(Exception e) {
             e.printStackTrace();
+        } finally {
+            System.out.println("\nThank you !!");
         }
     }
 }
